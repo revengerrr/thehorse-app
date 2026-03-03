@@ -582,7 +582,7 @@
             <p class="made-with">Made with 🐴 energy</p>
             <p>Original idea by <a href="https://x.com/ravarcheon/status/2028109714706575623" target="_blank">@ravarcheon</a></p>
             <p>Userscript managers: <a href="https://www.tampermonkey.net/" target="_blank">Tampermonkey</a> · <a href="https://scriptcat.org/" target="_blank">ScriptCat</a></p>
-            <p style="margin-top: 1rem;">Built by <a href="https://x.com/ClawdSign" target="_blank">@ClawdSign</a> · <a href="https://github.com/YOUR_USERNAME" target="_blank">GitHub</a></p>
+            <p style="margin-top: 1rem;">Built by <a href="https://x.com/ClawdSign" target="_blank">@ClawdSign</a> · <a href="https://github.com/revengerrr/thehorse-app" target="_blank">GitHub</a></p>
         </footer>
     </div>
 
@@ -632,13 +632,11 @@
             }
         };
 
-        // State
         let selectedImage = 'horse';
         let selectedTime = 2;
         let selectedPlatforms = ['x.com', 'instagram.com'];
         let customImageBase64 = null;
 
-        // DOM Elements
         const imageGrid = document.getElementById('image-grid');
         const timeGrid = document.getElementById('time-grid');
         const platformGrid = document.getElementById('platform-grid');
@@ -652,7 +650,6 @@
         const previewImg = document.getElementById('preview-img');
         const browserLinks = document.getElementById('browser-links');
 
-        // Initialize image grid with previews
         function initImageGrid() {
             imageGrid.innerHTML = '';
             Object.entries(imageData).forEach(([key, data], index) => {
@@ -680,7 +677,6 @@
             previewImg.src = imageData.horse.img;
         }
 
-        // Image selection
         imageGrid.addEventListener('click', (e) => {
             const option = e.target.closest('.image-option');
             if (!option) return;
@@ -708,7 +704,6 @@
             spawnFloater(e, imageData[selectedImage].emoji);
         });
 
-        // Custom image upload
         uploadArea.addEventListener('click', () => customImageInput.click());
         
         customImageInput.addEventListener('change', (e) => {
@@ -727,7 +722,6 @@
             reader.readAsDataURL(file);
         });
 
-        // Time selection
         timeGrid.addEventListener('click', (e) => {
             const option = e.target.closest('.time-option');
             if (!option) return;
@@ -737,7 +731,6 @@
             selectedTime = parseInt(option.dataset.time);
         });
 
-        // Platform selection
         platformGrid.addEventListener('click', (e) => {
             const option = e.target.closest('.platform-option');
             if (!option) return;
@@ -752,7 +745,6 @@
             }
         });
 
-        // Generate script
         generateBtn.addEventListener('click', () => {
             if (selectedPlatforms.length === 0) {
                 alert('Please select at least one platform!');
@@ -771,7 +763,6 @@
             populateBrowserLinks();
         });
 
-        // Copy to clipboard
         copyBtn.addEventListener('click', async () => {
             try {
                 await navigator.clipboard.writeText(scriptOutput.textContent);
@@ -793,7 +784,6 @@
             }
         });
 
-        // Generate the userscript with SOUND!
         function generateScript() {
             const matchRules = selectedPlatforms.map(p => 
                 `// @match        https://*.${p}/*\n// @match        http://*.${p}/*`
@@ -931,7 +921,6 @@ ${matchRules}
 })();`;
         }
 
-        // Browser links
         function populateBrowserLinks() {
             const isFirefox = navigator.userAgent.includes('Firefox');
             const isEdge = navigator.userAgent.includes('Edg');
@@ -980,7 +969,6 @@ ${matchRules}
             browserLinks.innerHTML = html;
         }
 
-        // Easter egg
         function spawnFloater(e, emoji) {
             const floater = document.createElement('div');
             floater.className = 'horse-float';
@@ -991,7 +979,6 @@ ${matchRules}
             setTimeout(() => floater.remove(), 3000);
         }
 
-        // Init
         initImageGrid();
         populateBrowserLinks();
     </script>
