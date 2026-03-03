@@ -694,7 +694,6 @@
 
             uploadArea.style.display = selectedImage === 'custom' ? 'block' : 'none';
 
-            // Play sound preview
             if (imageData[selectedImage].audio) {
                 const audio = new Audio(imageData[selectedImage].audio);
                 audio.volume = 0.3;
@@ -797,12 +796,30 @@
             const imageName = imageData[selectedImage].name;
             const hasAudio = audioSrc !== '';
 
+            let audioCode = '';
+            let audioPlayCode = '';
+            
+            if (hasAudio) {
+                audioCode = `
+    // Create audio
+    const blockerAudio = new Audio("${audioSrc}");
+    blockerAudio.volume = 0.8;
+    let audioPlayed = false;`;
+                
+                audioPlayCode = `
+        // Play sound when opacity starts (> 0.1)
+        if (opacity > 0.1 && !audioPlayed) {
+            blockerAudio.play().catch(() => {});
+            audioPlayed = true;
+        }`;
+            }
+
             return `// ==UserScript==
 // @name         Doom Scroll Blocker - ${imageName}
 // @namespace    https://thehorse.app
 // @version      1.0
 // @description  Block your doom scroll after ${selectedTime} minute(s) with image + sound! Generated at TheHorse.app
-// @author       TheHorse.app (original idea: @ravarcheon)
+// @author       TheHorse.app
 ${matchRules}
 // @grant        none
 // ==/UserScript==
@@ -835,7 +852,7 @@ ${matchRules}
         overflow: hidden;
     \`;
 
-    // Create image - FULLSCREEN COVER (stretch to fill)
+    // Create image - FULLSCREEN COVER
     const blockerImage = document.createElement("img");
     blockerImage.style.cssText = \`
         position: absolute;
@@ -868,13 +885,7 @@ ${matchRules}
         z-index: 10;
     \`;
     messageEl.textContent = "Time's up! Touch grass 🌿";
-
-    ${hasAudio ? `
-    // Create audio
-    const blockerAudio = new Audio("${audioSrc}");
-    blockerAudio.volume = 0.8;
-    let audioPlayed = false;
-    ` : '// No audio for this blocker'}
+${audioCode}
 
     document.body.appendChild(blockerContainer);
     blockerContainer.appendChild(blockerImage);
@@ -882,17 +893,19 @@ ${matchRules}
 
     let blockerRaf;
     const startTime = performance.now();
+    const fadeStart = ${fadeStart};
+    const fadeEnd = ${fadeEnd};
 
     function updateBlocker() {
         const elapsed = performance.now() - startTime;
-        const opacity = Math.min(Math.max(0, map(elapsed, ${fadeStart}, ${fadeEnd}, 0, 1)), 1);
+        const opacity = Math.min(Math.max(0, map(elapsed, fadeStart, fadeEnd, 0, 1)), 1);
         
         // Image fades in gradually from 0% to 100%
         blockerImage.style.opacity = opacity;
         messageEl.style.opacity = opacity;
         
-        // Background darkens gradually WITH the image (semi-transparent)
-        blockerContainer.style.background = \`rgba(0,0,0,\${opacity * 0.75})\`;
+        // Background darkens gradually WITH the image
+        blockerContainer.style.background = "rgba(0,0,0," + (opacity * 0.75) + ")";
         
         // Only block interactions when 80%+ visible
         if (opacity >= 0.8) {
@@ -904,14 +917,7 @@ ${matchRules}
             document.body.style.overflow = "hidden";
             document.documentElement.style.overflow = "hidden";
         }
-
-        ${hasAudio ? `
-        // Play sound when opacity starts (> 0.1)
-        if (opacity > 0.1 && !audioPlayed) {
-            blockerAudio.play().catch(() => {});
-            audioPlayed = true;
-        }
-        ` : ''}
+${audioPlayCode}
 
         if (blockerRaf) cancelAnimationFrame(blockerRaf);
         blockerRaf = requestAnimationFrame(updateBlocker);
