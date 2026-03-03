@@ -15,7 +15,6 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/HTML-CSS-JS-orange?style=flat-square" alt="Tech">
   <img src="https://img.shields.io/badge/Userscript-Tampermonkey-purple?style=flat-square" alt="Userscript">
   <img src="https://img.shields.io/badge/Version-1.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Status-Production-brightgreen?style=flat-square" alt="Status">
