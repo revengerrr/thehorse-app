@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://thehorse.app"><img src="https://img.shields.io/badge/🌐-Live_Demo-blue?style=for-the-badge" alt="Live Demo"></a>
+  <a href="https://thehorse-app.vercel.app"><img src="https://img.shields.io/badge/🌐-Live_Demo-blue?style=for-the-badge" alt="Live Demo"></a>
   <a href="#-features"><img src="https://img.shields.io/badge/✨-Features-green?style=for-the-badge" alt="Features"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/📜-MIT_License-yellow?style=for-the-badge" alt="License"></a>
 </p>
